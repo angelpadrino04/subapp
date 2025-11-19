@@ -1,5 +1,5 @@
 import { Asset } from "expo-asset";
-import * as FileSystem from "expo-file-system/legacy";
+import { File } from "expo-file-system";
 import { useEffect, useState } from "react";
 
 export function useLoadWebViewMap() {
@@ -14,10 +14,9 @@ export function useLoadWebViewMap() {
         const asset = Asset.fromModule(path);
         await asset.downloadAsync();
 
-        if (!asset.localUri) throw new Error("Not found leaflet.html");
-        const htmlContent = await FileSystem.readAsStringAsync(asset.localUri);
+        const file = new File(asset.localUri!);
+        const htmlContent = await file.text();
 
-        if (!htmlContent) throw new Error("Empty leaflet.html");
         if (isMounted) {
           setWebViewContent(htmlContent);
         }
