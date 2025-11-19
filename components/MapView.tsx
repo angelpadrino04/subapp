@@ -2,10 +2,7 @@ import { useLoadWebViewMap } from "@/hooks/useLoadWebViewMap";
 import { ActivityIndicator, Text, View } from "react-native";
 import { LeafletView, LeafletViewProps } from "react-native-leaflet-view";
 
-export function MapView({
-  mapMarkers,
-  userPosition,
-}: LeafletViewProps & { userPosition: any }) {
+export function MapView({ mapMarkers, ownPositionMarker }: LeafletViewProps) {
   const { webViewContent } = useLoadWebViewMap();
 
   if (!webViewContent) {
@@ -20,11 +17,12 @@ export function MapView({
   return (
     <LeafletView
       source={{ html: webViewContent }}
-      mapCenterPosition={userPosition || undefined}
-      //   androidHardwareAccelerationDisabled={false}
-      //   zoom={14}
+      mapCenterPosition={ownPositionMarker?.position}
+      zoom={14}
       mapMarkers={mapMarkers}
-      //   mapShapes={enableRoutesShapes ? mapShapes : undefined}
+      ownPositionMarker={ownPositionMarker}
+
+      //   mapShapes={mapShapes}
     />
   );
 }

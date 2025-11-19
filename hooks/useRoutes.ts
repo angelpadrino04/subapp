@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 const OSRM_URL = "http://192.168.10.135:5001";
 
 //TODO: change to file types
-export type Coordinate = {
+export type Coordinates = {
   lat: number;
   lng: number;
 };
 
 export async function useRoutes(
-  coordinateA: Coordinate,
-  coordinateB: Coordinate
+  coordinateA: Coordinates,
+  coordinateB: Coordinates
 ) {
   const [routeCoordinates, setRouteCoordinates] = useState([]);
 

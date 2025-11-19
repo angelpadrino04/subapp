@@ -2,13 +2,38 @@ import { MapView } from "@/components/MapView";
 import { useBusesPosition } from "@/hooks/useBusesPosition";
 import { useUserCurrentPosition } from "@/hooks/useUserCurrentPosition";
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import { MapMarker } from "react-native-leaflet-view";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import {
+  AnimationType,
+  MapMarker,
+  OwnPositionMarker,
+} from "react-native-leaflet-view";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function App() {
   const { buses } = useBusesPosition();
-  const { position } = useUserCurrentPosition();
+  const { position, errorMsg } = useUserCurrentPosition();
+
+  if (errorMsg) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.loadingContainer}>
+          <Text style={{ color: "red" }}>Error de ubicación: {errorMsg}</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (!position) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#0000ff" />
+          <Text>Obteniendo ubicación actual</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   const mapMarkersBuses: MapMarker[] | undefined = buses?.map((bus) => ({
     position: bus.coordinate,
@@ -18,18 +43,17 @@ export default function App() {
     title: `Bus ${bus.id}`,
   }));
 
-  const mapMarkers: MapMarker[] | undefined = buses
-    ? [
-        ...mapMarkersBuses,
-        {
-          position: position,
-          icon: "🥸",
-          size: [15, 15],
-          id: "user",
-          title: "Yo",
-        },
-      ]
-    : undefined;
+  const mapMarkers: MapMarker[] | undefined = [...mapMarkersBuses];
+  const ownPositionMarker: OwnPositionMarker = {
+    position: position,
+    icon: "👤",
+    size: [15, 15],
+    id: "user",
+    title: "Yo",
+    animation: {
+      type: AnimationType.PULSE,
+    },
+  };
 
   // const mapShapes = [
   //   {
@@ -39,13 +63,13 @@ export default function App() {
   //     positions: routeCoordinates,
   //   },
   // ];
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <MapView
-          //TODO: change to array
           mapMarkers={mapMarkers}
-          userPosition={position}
+          ownPositionMarker={ownPositionMarker}
         />
       </View>
     </SafeAreaView>

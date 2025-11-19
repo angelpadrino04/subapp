@@ -1,9 +1,9 @@
 import * as Location from "expo-location";
 import { useEffect, useState } from "react";
-import { Coordinate } from "./useRoutes";
+import { Coordinates } from "./useRoutes";
 
 export function useUserCurrentPosition() {
-  const [position, setPosition] = useState<Coordinate | null>();
+  const [position, setPosition] = useState<Coordinates | null>();
   const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
