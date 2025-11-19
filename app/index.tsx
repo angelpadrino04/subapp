@@ -37,9 +37,10 @@ export default function App() {
 
   const mapMarkersBuses: MapMarker[] | undefined = buses?.map((bus) => ({
     position: bus.coordinate,
-    icon: "🚍",
-    size: [15, 15],
+    icon: "https://cdn-icons-png.flaticon.com/128/741/741411.png",
+    size: [20, 20],
     id: bus.id,
+    iconAnchor: [10, 10],
     title: `Bus ${bus.id}`,
   }));
 

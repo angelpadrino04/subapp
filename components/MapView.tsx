@@ -21,7 +21,7 @@ export function MapView({ mapMarkers, ownPositionMarker }: LeafletViewProps) {
       zoom={14}
       mapMarkers={mapMarkers}
       ownPositionMarker={ownPositionMarker}
-
+      attributionControl={false}
       //   mapShapes={mapShapes}
     />
   );
